@@ -22,7 +22,7 @@ flowchart TD
     I --> G
     G -- Tidak --> J[["sort(data, data + n)"]]
     J --> K[["mean := hitungMean(data, n)<br>median := hitungMedian(data, n)<br>modus := hitungModus(data, n)"]]
-    M --> N["minimum := data[0]<br>maksimum := data[n-1]<br>range := maksimum - minimum"]
+    K --> N["minimum := data[0]<br>maksimum := data[n-1]<br>range := maksimum - minimum"]
     N --> O[["q1 := hitungQ1(data, n)<br>q3 := hitungQ3(data, n)"]]
     O --> P["iqr := q3 - q1<br>lowerFence := q1 - 1.5 * iqr<br>upperFence := q3 + 1.5 * iqr"]
     P --> Q[["varians := hitungVarians(data, n, mean)"]]
