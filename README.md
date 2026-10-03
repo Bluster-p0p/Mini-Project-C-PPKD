@@ -49,17 +49,6 @@ Program menggunakan beberapa library bawaan C++ untuk mendukung proses perhitung
 | `<cmath>` | Operasi matematika seperti nilai mutlak, akar, dan fungsi matematika lainnya |
 | `<algorithm>` | Menyediakan fungsi algoritma seperti `sort()` |
 
-### Contoh penggunaan
-
-```cpp
-#include <iostream>
-#include <iomanip>
-#include <cmath>
-#include <algorithm>
-
-using namespace std;
----
-
 ## 1. Flowchart Utama (Program Utama / `main`)
 
 Flowchart ini menggambarkan alur kerja program utama mulai dari input data, pengurutan, kalkulasi statistik, hingga penyajian kurva.
