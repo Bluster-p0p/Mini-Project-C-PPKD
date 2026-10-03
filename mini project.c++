@@ -473,7 +473,7 @@ int main() {
 
     analisisEkor(hasil.skewness);
 
-    cout << "\n10. => Kurva\n";
+    cout << "\n=> Kurva\n";
 
     tampilkanKurva(data, n);
 
