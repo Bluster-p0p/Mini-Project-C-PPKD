@@ -6,7 +6,7 @@ Dokumentasi ini berisi diagram alir (flowchart) serta penjelasan logis untuk pro
 
 ## 1. Flowchart Utama (Program Utama / `main`)
 
-Flowchart ini menggambarkan alur kerja program utama mulai dari input data, pengurutan, kalkulasi statistik, hingga penyajian grafik/kurva.
+Flowchart ini menggambarkan alur kerja program utama mulai dari input data, pengurutan, kalkulasi statistik, hingga penyajian kurva.
 
 ```mermaid
 flowchart TD
@@ -21,8 +21,10 @@ flowchart TD
     H --> I["i := i + 1"]
     I --> G
     G -- Tidak --> J[["sort(data, data + n)"]]
-    J --> K[["mean := hitungMean(data, n)<br>median := hitungMedian(data, n)<br>modus := hitungModus(data, n)"]]
-    K --> N["minimum := data[0]<br>maksimum := data[n-1]<br>range := maksimum - minimum"]
+    J --> K[["mean := hitungMean(data, n)"]]
+    K --> L[["median := hitungMedian(data, n)"]]
+    L --> M[["modus := hitungModus(data, n)"]]
+    M --> N["minimum := data[0]<br>maksimum := data[n-1]<br>range := maksimum - minimum"]
     N --> O[["q1 := hitungQ1(data, n)<br>q3 := hitungQ3(data, n)"]]
     O --> P["iqr := q3 - q1<br>lowerFence := q1 - 1.5 * iqr<br>upperFence := q3 + 1.5 * iqr"]
     P --> Q[["varians := hitungVarians(data, n, mean)"]]
@@ -43,18 +45,21 @@ flowchart TD
 ```
 
 ### Penjelasan Alur (Program Utama)
-1. **Inisialisasi & Validasi Input**: Program meminta masukan `n` (jumlah data). Jika $n \le 0$, muncul pesan error dan pengguna diminta memasukkan ulang data.
-2. **Penginputan Array**: Menggunakan perulangan (*loop*) `i` dari `0` sampai `n-1` untuk membaca setiap nilai elemen `data[i]`.
-3. **Pengurutan Data**: Memanggil fungsi bawaan `sort(data, data + n)` untuk menyusun data secara terurut (*ascending*).
-4. **Kalkulasi Nilai Statistika**:
-   * Memanggil fungsi pemroses parameter deskriptif: `mean`, `median`, dan `modus`.
-   * Menentukan nilai `minimum` (elemen `data[0]`), `maksimum` (elemen `data[n-1]`), serta menghitung `range`.
-   * Memanggil pemroses kuartil (`q1` dan `q3`), lalu menghitung `iqr`, `lowerFence`, dan `upperFence`.
-   * Menhitung nilai sebaran (`varians`, `standarDeviasi`, dan `skewness`).
+1. **Inisialisasi & Validasi Input**: Program mencetak judul, lalu meminta jumlah data `n`. Jika n ≤ 0, program mencetak pesan error dan meminta `n` dimasukkan ulang sampai valid.
+2. **Penginputan Array**: Perulangan `i` dari `0` sampai `n-1` membaca setiap nilai `data[i]`.
+3. **Pengurutan Data**: `sort(data, data + n)` mengurutkan data dari kecil ke besar (ascending).
+4. **Kalkulasi Statistika**:
+   * Menghitung `mean`, `median`, dan `modus`.
+   * Menentukan `minimum` (`data[0]`), `maksimum` (`data[n-1]`), dan `range`.
+   * Menghitung `q1` dan `q3`, lalu `iqr`, `lowerFence`, dan `upperFence`.
+   * Menghitung ukuran sebaran: `varians`, `standarDeviasi`, dan `skewness`.
 5. **Output Hasil & Pemanggilan Modul**:
-   * Menampilkan array data terurut.
-   * Mengecek ketersediaan modus (`isnan(modus)`). Jika tidak ada, mencetak informasi "Tidak ada modus".
-   * Memanggil fungsi modul `analisisOutlier`, `analisisEkor`, dan `tampilkanKurva` untuk visualisasi.
+   * Menampilkan data yang sudah terurut.
+   * Mencetak mean dan median. Untuk modus, program mengecek `isnan(modus)`: jika benar dicetak "Tidak ada modus", jika tidak dicetak nilai modusnya.
+   * Mencetak Q1, Q3, IQR, kedua fence, dan keterangan batas Z-Score (|Z| > 3).
+   * Memanggil `analisisOutlier` untuk mendeteksi outlier, lalu mencetak maksimum, minimum, range, varians, dan standar deviasi.
+   * Memanggil `analisisEkor` untuk menafsirkan bentuk ekor distribusi dari skewness, dan `tampilkanKurva` untuk menampilkan kurva frekuensi.
+   * Program selesai.
 
 ---
 
@@ -93,17 +98,16 @@ flowchart TD
 ```
 
 ### Penjelasan Alur (`analisisOutlier`)
-1. **Inisialisasi**: Menetapkan penghitung pencilan `jumlahOutlier = 0` dan indeks perulangan `i = 0`.
+1. **Inisialisasi**: `jumlahOutlier = 0` dan `i = 0`.
 2. **Pemeriksaan Per-Elemen**:
-   * Untuk tiap `data[i]`, dihitung nilai skor standar `z` melalui `hitungZScore()`.
-   * Mengecek dua batas: apakah data melampaui pagar/fence (`< lowerFence` atau `> upperFence`) DAN apakah $\vert{}z\vert{} > 3.0$.
+   * Untuk tiap `data[i]`, hitung skor `z` dengan `hitungZScore()`.
+   * Cek dua syarat: data berada di luar fence (`< lowerFence` atau `> upperFence`) **ATAU** |z| > 3.0. Data dianggap outlier jika salah satunya terpenuhi.
 3. **Pengkategorian Outlier**:
-   * Jika memenuhi salah satu syarat pencilan, cetak nilai data beserta skor Z-nya.
-   * Tentukan label spesifiknya: **Outlier Bawah**, **Outlier Atas**, atau **Outlier berdasarkan Z-Score**.
-   * Tambahkan penghitung `jumlahOutlier` sebanyak 1.
-4. **Keluaran Akhir**:
-   * Setelah seluruh elemen diperiksa (`i >= n`), cek jika `jumlahOutlier == 0`.
-   * Jika tidak ada pencilan, tampilkan teks *"Tidak ditemukan outlier"*. Jika ada, cetak total nilai `jumlahOutlier`.
+   * Jika outlier, cetak nilai data beserta skor Z-nya.
+   * Jenisnya ditentukan berurutan: **Outlier bawah** (`< lowerFence`), jika tidak maka **Outlier atas** (`> upperFence`), jika tidak maka **Outlier berdasarkan Z-Score**.
+   * `jumlahOutlier` bertambah 1.
+   * Jika bukan outlier, program langsung lanjut ke data berikutnya.
+4. **Keluaran Akhir**: Setelah semua data diperiksa (`i >= n`), jika `jumlahOutlier == 0` dicetak "Tidak ditemukan outlier". Jika tidak, dicetak jumlah outlier.
 
 ---
 
@@ -135,14 +139,23 @@ flowchart TD
 ```
 
 ### Penjelasan Alur (`hitungModus`)
-1. **Inisialisasi**: Asumsikan kandidat `modus = data[0]` dan frekuensi terbanyak saat ini `frekuensiMaks = 1`.
+1. **Inisialisasi**: Kandidat `modus = data[0]` dan `frekuensiMaks = 1`.
 2. **Nested Loop (Perulangan Bersarang)**:
-   * **Loop Luar (`i`)**: Mengiterasi setiap data sebagai acuan pembanding.
-   * **Loop Dalam (`j`)**: Menghitung berapa kali nilai `data[i]` muncul di seluruh isi array. Setiap kali ada nilai yang sama (`data[i] == data[j]`), variabel `frekuensi` bertambah 1.
-3. **Pembaruan Modus**:
-   * Setelah *loop* dalam selesai, bandingkan `frekuensi` data saat ini dengan `frekuensiMaks`.
-   * Jika `frekuensi > frekuensiMaks`, perbarui `frekuensiMaks` dengan nilai baru dan tetapkan kandidat `modus = data[i]`.
-4. **Pemeriksaan Unik / Hasil Akhir**:
-   * Setelah seluruh data selesai dihitung, cek `frekuensiMaks`.
-   * Jika `frekuensiMaks == 1` (semua data hanya muncul 1 kali), kembalikan nilai `NaN` (Not a Number).
-   * Jika ada frekuensi > 1, kembalikan nilai `modus`.
+   * **Loop luar (`i`)**: mengambil satu data sebagai acuan.
+   * **Loop dalam (`j`)**: membandingkan `data[i]` dengan seluruh data. Setiap kali sama (`data[i] == data[j]`), `frekuensi` bertambah 1.
+3. **Pembaruan Modus**: Setelah loop dalam selesai, jika `frekuensi > frekuensiMaks`, maka `frekuensiMaks` dan `modus` diperbarui. Karena pembandingnya `>`, jika ada beberapa nilai dengan frekuensi sama, yang terpilih adalah yang pertama ditemukan (yang terkecil, karena data sudah terurut).
+4. **Hasil Akhir**: Jika `frekuensiMaks == 1` (semua data hanya muncul sekali), fungsi mengembalikan `NaN`. Jika tidak, fungsi mengembalikan `modus`.
+
+---
+
+## 4. Fungsi Pendukung
+
+* `hitungMean`: jumlah seluruh data dibagi `n`.
+* `hitungMedian`: jika `n` genap, rata-rata dua nilai tengah. Jika ganjil, nilai tengah.
+* `hitungQ1` dan `hitungQ3`: posisi `n/4` dan `3n/4` pada data terurut. Jika posisinya pas (habis dibagi 4), diambil rata-rata dua nilai di sekitarnya. Jika tidak, diambil nilai pada posisi tersebut.
+* `hitungVarians`: rata-rata kuadrat selisih data terhadap mean, dibagi `n` (varians populasi, bukan `n-1`).
+* `hitungStandarDeviasi`: akar kuadrat dari varians.
+* `hitungSkewness`: rata-rata dari pangkat tiga skor standar `((x - mean) / SD)^3`. Jika SD = 0, hasilnya 0.
+* `hitungZScore`: `(nilai - mean) / SD`. Jika SD = 0, hasilnya 0.
+* `analisisEkor`: skewness > 0.5 berarti ekor kanan (miring kanan), skewness < -0.5 berarti ekor kiri (miring kiri), selain itu relatif simetris.
+* `tampilkanKurva`: mengelompokkan nilai unik beserta frekuensinya, lalu menggambar grafik bintang (`*`). Tinggi tiap kolom sama dengan frekuensi nilainya. Baris digambar dari atas ke bawah, lalu diberi sumbu X dan label nilai.
