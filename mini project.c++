@@ -143,11 +143,7 @@ void tampilkanData(double data[], int n) {
     cout << endl;
 }
 
-void analisisOutlier(double data[], int n,
-                     double mean,
-                     double standarDeviasi,
-                     double lowerFence,
-                     double upperFence) {
+void analisisOutlier(double data[], int n, double mean, double standarDeviasi, double lowerFence, double upperFence) {
 
     cout << "\n============================================\n";
     cout << "             ANALISIS OUTLIER\n";
@@ -467,9 +463,7 @@ int main() {
     cout << "\n=> Standar Deviasi\n";
 
     cout << "   = "
-         << hasil.standarDeviasi << endl;
-
-    cout << "\n=> Ekor Kiri & Kanan\n";
+         << hasil.standarDeviasi;
 
     analisisEkor(hasil.skewness);
 
