@@ -1,7 +1,63 @@
 # Dokumentasi Program Analisis Statistika
 
-Dokumentasi ini berisi diagram alir (flowchart) serta penjelasan logis untuk program utama dan fungsi-fungsi pendukungnya.
+## 📖 Deskripsi Program
 
+Program C++ yang kami buat pada mini project ini merupakan sebuah sistem untuk melakukan **analisis statistika pada suatu dataset** yang diberikan oleh pengguna.
+
+Alasan kami membuat program ini adalah karena kami ingin sekaligus mempraktikkan berbagai materi yang telah dipelajari pada mata kuliah **Statistika**. Oleh karena itu, berbagai rumus dan konsep statistika diimplementasikan ke dalam bentuk fungsi-fungsi yang dapat digunakan oleh program.
+
+### 📌 Analisis Statistika
+
+Program menyediakan beberapa jenis analisis terhadap data yang dimasukkan oleh pengguna, yaitu:
+
+1. **Mean** (rata-rata)
+2. **Median** (nilai tengah)
+3. **Modus** (nilai yang paling sering muncul)
+4. **Nilai Minimum & Maksimum** dari data
+5. **Range** (jangkauan data terkecil dan terbesar)
+6. **Varians** (tingkat persebaran data)
+7. **Standar Deviasi** (simpangan baku)
+8. **Z-Score** untuk melihat kemungkinan adanya outlier
+9. **Analisis Outlier**
+10. **Menentukan Bentuk Kurva**
+11. **Visualisasi Kurva** berdasarkan frekuensi data
+
+---
+
+## 🧠 Konsep Pemrograman yang Digunakan
+
+Dalam proses pembuatan program, kami menerapkan beberapa konsep dasar pemrograman C++, yaitu:
+
+1. **Percabangan**
+2. **Perulangan**
+3. **Array**
+4. **Struct**
+5. **Function / Fungsi**
+
+Konsep-konsep tersebut digunakan untuk mengolah data, melakukan perhitungan statistika, serta menampilkan hasil analisis kepada pengguna.
+
+---
+
+## 📚 Library yang Digunakan
+
+Program menggunakan beberapa library bawaan C++ untuk mendukung proses perhitungan dan visualisasi.
+
+| Library | Fungsi |
+|---|---|
+| `<iostream>` | Mengatur input dan output program |
+| `<iomanip>` | Mengatur format output, termasuk visualisasi kurva |
+| `<cmath>` | Operasi matematika seperti nilai mutlak, akar, dan fungsi matematika lainnya |
+| `<algorithm>` | Menyediakan fungsi algoritma seperti `sort()` |
+
+### Contoh penggunaan
+
+```cpp
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+#include <algorithm>
+
+using namespace std;
 ---
 
 ## 1. Flowchart Utama (Program Utama / `main`)
